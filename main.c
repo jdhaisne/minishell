@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/25 12:25:10 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/03/25 15:35:20 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/01 16:13:51 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char **get_path(char **env)
 	char *tmp;
 
 	i = 0;
+	if(env[0] == NULL)
+		return (NULL);
 	while (ft_strncmp(env[i], "PATH", 4) != 0)
 		i++;
 	path = ft_strsplit(env[i], ':');
@@ -66,95 +68,51 @@ void	print_list(t_list *start)
 	}
 }
 
-char *get_value(t_list *env_l, char *name)
-{
-	char *value;
-	char **tmp;
-
-	value = NULL;
-	while (env_l != NULL)
-	{
-		if(ft_strncmp(env_l->content, name, ft_strlen(name)) == 0)
-		{
-			tmp = ft_strsplit(env_l->content, '=');
-			value = tmp[1];
-		}
-		env_l = env_l->next;
-	}
-	return (value);
-}
-
-void	env(char **arg, t_list *env_l)
-{
-	int i;
-	char *value;
-
-	i = 1;
-	value = NULL;
-	if (arg[i] == NULL)
-		print_list(env_l);
-	while (arg[i] != NULL)
-	{
-		value = get_value(env_l, arg[i]);
-		if(value != NULL)
-			ft_putendl(value);
-		i++;
-	}
-}
-
-t_list	*add_end(t_list *start, t_list *new)
-{
-	t_list *tmp;
-
-	tmp = start;
-	while(tmp->next != NULL)
-		tmp = tmp->next;
-	tmp->next = new;
-	return(start);
-}
-
-void	ft_setenv(char **arg, t_list **env_l)
-{
-	t_list *new;
-	char *str;
-
-	if (arg[1] == NULL)
-	{
-		print_list(*env_l);
-		return ;
-	}
-	str = ft_strjoin(arg[1], "=");
-	if(arg[2] != NULL)
-		str = ft_strjoin(str, arg[2]);
-	new = ft_lstnew(str, sizeof(char) * ft_strlen(str));
-	*env_l = add_end(*env_l, new);
-}
-
-void	built_in(char **arg, t_list **env_l)
+int	built_in(char **arg, t_list **env_l)
 {
 	if (ft_strcmp(arg[0], "exit") == 0)
+	{
 		exit(0);
+		return (1);
+	}
 	else if (ft_strcmp(arg[0], "env") == 0)
-		env(arg, *env_l);
+	{
+		ft_putendl("env B");
+		ft_env(arg, *env_l);
+		return (1);
+	}
 	else if (ft_strcmp(arg[0], "setenv") == 0)
-		ft_setenv(arg, env_l);
+	{
+		ft_setenv(arg[1], env_l);
+		return (1);
+	}
+		else if (ft_strcmp(arg[0], "unsetenv") == 0)
+	{
+		*env_l = ft_unsetenv(arg[1], *env_l);
+		return (1);
+	}
 	else if (ft_strcmp(arg[0], "cd") == 0)
+	{
 		cd(arg, *env_l);
+		return (1);
+	}
+	else
+		return (0);
 }
 
-t_list	*double_tab_to_list(char** tab)
+t_list	*double_tab_to_list(char **tab)
 {
 	int		i;
 	t_list	*start;
 	t_list	*tmp;
 
 	i = 0;
-	start = ft_lstnew(tab[i], sizeof(char) * ft_strlen(tab[i]));
+	start = ft_lstnew(tab[i], sizeof(char) * ft_strlen(tab[i]) + 1);
 	tmp = start;
 	i++;
 	while(tab[i] != NULL)
 	{
-		tmp->next = ft_lstnew(tab[i], sizeof(char) * ft_strlen(tab[i]));
+		tmp->next = ft_lstnew(tab[i], sizeof(char) * ft_strlen(tab[i]) + 1);
 		tmp = tmp->next;
 		i++;
 	}
@@ -162,39 +120,50 @@ t_list	*double_tab_to_list(char** tab)
 	return (start);
 }
 
-int main(int argc, char **argv, char **env)
+void	launch(char **arg, char **env, char **path)
+{
+	pid_t	pid;
+	int		i;
+
+	i = 0;
+	pid = fork();
+	if(arg[0] == NULL)
+		return ;
+	if (pid == 0)
+	{
+		while (path[i] != NULL)
+		{
+			execve(ft_strjoin(path[i], arg[0]), arg, env);
+			i++;
+		}
+	}
+	if(pid > 0)
+		wait(&i);
+}
+
+int main(int argc, char **argv)
 {
 	char	*str;
 	char	**arg;
-	char	**path;
 	t_list	*env_l;
-	int		i;
-	pid_t pid;
 
 	//init;
-	path = get_path(env);
-	env_l = double_tab_to_list(env);
+	if (argc == 5)
+		ft_putendl(argv[0]);
 	while(1)
 	{
-		i = 0;
+	env_l = double_tab_to_list(environ);
 		ft_putstr("$> ");
 		get_next_line(0, &str);
 		arg = ft_strsplit(str, ' ');
-		built_in(arg, &env_l);
-		pid = fork();
-		if(pid == 0)
+		if(arg != NULL)
 		{
-			while(path[i] != NULL)
-			{
-				execve(ft_strjoin(path[i], arg[0]), arg, env);
+		if(built_in(arg, &env_l) == 0)
+			launch(arg, environ, get_path(environ));
 
-				i++;
-			}
-		}
-		if(pid > 0)
-			wait(&i);
 		//close
 		free(str);
+		}
 	}
 	return (0);
 }
