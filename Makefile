@@ -17,12 +17,16 @@ SRC = main.c \
 	  env.c \
 	  setenv.c \
 	  unsetenv.c \
+	  libft_add.c \
+	  ft_cd.c \
 	  gnl/get_next_line.c
 
 OBJ = main.o \
 	  env.o \
 	  setenv.o \
 	  unsetenv.o \
+	  libft_add.o \
+	  ft_cd.o \
 	  get_next_line.o
 
 LIB = libft.a

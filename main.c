@@ -35,29 +35,6 @@ char **get_path(char **env)
 	return(path);
 }
 
-char *get_home_path(t_list *env_l)
-{
-	char	*home_path;
-	char	**tmp;
-
-	while(ft_strncmp(env_l->content, "HOME", 4) != 0)
-		env_l = env_l->next;
-	home_path = env_l->content;
-	tmp = ft_strsplit(home_path, '=');
-	home_path = tmp[1];
-	//free_double(tmp);
-	return (home_path);
-}
-
-void cd(char **arg, t_list *env_l)
-{
-	char *home;
-	home = get_home_path(env_l);
-	if(arg[1] == NULL)
-		chdir(home);
-	else if(arg[2] == NULL)
-		chdir(arg[1]);
-}
 
 void	print_list(t_list *start)
 {
@@ -77,7 +54,6 @@ int	built_in(char **arg, t_list **env_l)
 	}
 	else if (ft_strcmp(arg[0], "env") == 0)
 	{
-		ft_putendl("env B");
 		ft_env(arg, *env_l);
 		return (1);
 	}
@@ -107,6 +83,8 @@ t_list	*double_tab_to_list(char **tab)
 	t_list	*tmp;
 
 	i = 0;
+	if(tab[0] == NULL)
+		return (NULL);
 	start = ft_lstnew(tab[i], sizeof(char) * ft_strlen(tab[i]) + 1);
 	tmp = start;
 	i++;
@@ -124,6 +102,7 @@ void	launch(char **arg, char **env, char **path)
 {
 	pid_t	pid;
 	int		i;
+	int		err;
 
 	i = 0;
 	pid = fork();
@@ -133,9 +112,15 @@ void	launch(char **arg, char **env, char **path)
 	{
 		while (path[i] != NULL)
 		{
-			execve(ft_strjoin(path[i], arg[0]), arg, env);
+			err = execve(ft_strjoin(path[i], arg[0]), arg, env);
 			i++;
 		}
+		if(err == -1)
+		{
+			ft_putstr("minishell: command not found: ");
+			ft_putendl(arg[0]);
+		}
+		exit(0);
 	}
 	if(pid > 0)
 		wait(&i);
@@ -148,22 +133,23 @@ int main(int argc, char **argv)
 	t_list	*env_l;
 
 	//init;
+	env_l = double_tab_to_list(environ);
 	if (argc == 5)
 		ft_putendl(argv[0]);
 	while(1)
 	{
-	env_l = double_tab_to_list(environ);
 		ft_putstr("$> ");
 		get_next_line(0, &str);
+		str = ft_strtrim(str);
 		arg = ft_strsplit(str, ' ');
-		if(arg != NULL)
+		if(*arg != NULL)
 		{
 		if(built_in(arg, &env_l) == 0)
 			launch(arg, environ, get_path(environ));
 
 		//close
-		free(str);
 		}
+		free(str);
 	}
 	return (0);
 }

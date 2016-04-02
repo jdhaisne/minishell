@@ -61,10 +61,10 @@ char **split_tab(char **tab, int i)
 	return (tab2);
 }
 
-void	ft_env(char **arg, t_list *tmp)
+void	ft_env(char **arg, t_list *env_l)
 {
 	int i;
-	t_list *env_l;
+	t_list *new_env;
 	char **env;
 	char **tab;
 	char **path;
@@ -74,17 +74,17 @@ void	ft_env(char **arg, t_list *tmp)
 	env = NULL;
 	tab = NULL;
 	path = get_path(environ);
-	env_l = tmp;
+	new_env = ft_lstdup(env_l);
 	while(arg[i] != NULL && ft_strlen(arg[i]) == get_name_size(arg[i]))
 	{
 		if(ft_strcmp(arg[i], "-u") == 0)
 		{
-			ft_unsetenv(arg[i + 1], env_l);
+			ft_unsetenv(arg[i + 1], new_env);
 			i += 2;
 		}
 		else if(ft_strcmp(arg[i], "-i") == 0)
 		{
-			env_l = NULL;
+			new_env = NULL;
 			i++;
 		}
 		else if (ft_strcmp(arg[i], "-P") == 0)
@@ -102,17 +102,18 @@ void	ft_env(char **arg, t_list *tmp)
 	}
 	while (arg[i] != NULL && ft_strlen(arg[i]) != get_name_size(arg[i]))
 	{
-		ft_setenv(arg[i], &env_l);
+		ft_setenv(arg[i], &new_env);
 		i++;
 	}
 	if (arg[i] == NULL)
-		print_list(env_l);
+	{
+		print_list(new_env);
+	}
 	else
 	{
-		env = list_to_tab(env_l);
+		env = list_to_tab(new_env);
 		tab = split_tab(arg, i);
-		ft_putendl(tab[0]);
-		launch(tab, env, path);
-		built_in(tab, &env_l);
+		if (built_in(tab, &new_env) == 0)
+			launch(tab, env, path);
 	}
 }
