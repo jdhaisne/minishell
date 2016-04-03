@@ -14,20 +14,25 @@ static char	*get_home_path(t_list *env_l)
 
 void		cd(char **arg, t_list *env_l)
 {
-	char *home;
-	home = get_home_path(env_l);
-	if(arg[1] == NULL)
-	{
-		if (home != NULL)
-			chdir(home);
-		else
-		ft_putendl("cd: HOME not set");
-	}
-	else if(arg[2] == NULL)
-	{
-		if (arg[1][1] === '~')
-			chdir(home);
-		chdir(arg[1]);
+	char	*home;
+	char	*curpath;
+	int		i;
+	int		P;
 
+	home = get_home_path(env_l);
+	i = 1;
+	/*while(arg[i] != NULL && arg[i][0] == '-')
+	{
+		while (arg[i][
+		i++;
+	}*/
+	if (arg[i] == NULL)
+	{
+
+	}
+	else
+	{
+		if(arg[i][0] == '/')
+			curpath = ftstrdup(arg[i]);
 	}
 }
