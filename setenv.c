@@ -17,6 +17,11 @@ t_list *add_end(t_list *new, t_list *start)
 	t_list	*tmp;
 
 	tmp = start;
+	if (start == NULL)
+	{
+		start = new;
+		return (start);
+	}
 	while(tmp->next != NULL)
 		tmp = tmp->next;
 	tmp->next = new;

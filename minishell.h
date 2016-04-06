@@ -20,8 +20,6 @@ size_t	get_name_size(char *name);
 void	ft_setenv(char *arg, t_list **env_l);
 t_list	*ft_unsetenv(char *name, t_list *env_l);
 
-t_list	*ft_lstdup(t_list *start);
-
-void		cd(char **arg, t_list *env_l);
+void		cd(char **arg, t_list **env_l);
 
 #endif

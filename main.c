@@ -69,7 +69,7 @@ int	built_in(char **arg, t_list **env_l)
 	}
 	else if (ft_strcmp(arg[0], "cd") == 0)
 	{
-		cd(arg, *env_l);
+		cd(arg, env_l);
 		return (1);
 	}
 	else
