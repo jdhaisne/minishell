@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/25 12:25:10 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/01 16:13:51 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/06 16:31:59 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,12 @@ void	print_list(t_list *start)
 
 int	built_in(char **arg, t_list **env_l)
 {
+	int i;
+
+	i = 1;
 	if (ft_strcmp(arg[0], "exit") == 0)
 	{
-		exit(0);
+		ft_exit(arg);
 		return (1);
 	}
 	else if (ft_strcmp(arg[0], "env") == 0)
@@ -59,7 +62,16 @@ int	built_in(char **arg, t_list **env_l)
 	}
 	else if (ft_strcmp(arg[0], "setenv") == 0)
 	{
-		ft_setenv(arg[1], env_l);
+		if(arg[1] == NULL)
+				{
+				ft_setenv(arg[1], env_l);
+				return (1);
+				}
+		while(arg[i] != NULL)
+		{
+			ft_setenv(arg[i], env_l);
+			i++;
+		}
 		return (1);
 	}
 		else if (ft_strcmp(arg[0], "unsetenv") == 0)
@@ -105,6 +117,7 @@ void	launch(char **arg, char **env, char **path)
 	int		err;
 
 	i = 0;
+	err = -1;
 	pid = fork();
 	if(arg[0] == NULL)
 		return ;
@@ -115,12 +128,12 @@ void	launch(char **arg, char **env, char **path)
 			err = execve(ft_strjoin(path[i], arg[0]), arg, env);
 			i++;
 		}
-		if(err == -1)
+		if(err == -1 && execve(arg[0], arg, env) == -1)
 		{
 			ft_putstr("minishell: command not found: ");
 			ft_putendl(arg[0]);
 		}
-		exit(0);
+		exit(err);
 	}
 	if(pid > 0)
 		wait(&i);
@@ -134,18 +147,18 @@ int main(int argc, char **argv)
 
 	//init;
 	env_l = double_tab_to_list(environ);
+	ft_putendl("welcomw in jdsh");
+	str = NULL;
 	if (argc == 5)
 		ft_putendl(argv[0]);
 	while(1)
 	{
 		ft_putstr("$> ");
-		get_next_line(0, &str);
-		str = ft_strtrim(str);
-		arg = ft_strsplit(str, ' ');
+		arg = read();
 		if(*arg != NULL)
 		{
 		if(built_in(arg, &env_l) == 0)
-			launch(arg, environ, get_path(environ));
+			launch(arg, list_to_tab(env_l), get_path(list_to_tab(env_l)));
 
 		//close
 		}

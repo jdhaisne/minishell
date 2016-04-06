@@ -22,9 +22,10 @@ char	*clean(char *curpath)
 		i++;
 	}
 	i = 0;
+			new = ft_strcat(new,"/"); 
 	while(tabpath[i] != NULL)
 	{
-		if (ft_strlen(tabpath[i]) > 0)
+		if (ft_strlen(tabpath[i]) > 0 && i > 0)
 			new = ft_strcat(new,"/"); 
 		new = ft_strcat(new, tabpath[i]);
 		ft_strdel(&tabpath[i]);
@@ -32,6 +33,11 @@ char	*clean(char *curpath)
 	}
 	return (new);
 }
+
+/*static void error(char *curpath)
+{
+	
+}*/
 
 void		cd(char **arg, t_list **env_l)
 {
@@ -60,11 +66,22 @@ void		cd(char **arg, t_list **env_l)
 	{
 		if(arg[i][0] == '/')
 			curpath = ft_strdup(arg[i]);
+		else if(ft_strequ(arg[i], "-") == 1)
+		{
+			curpath = ft_strdup(ft_envar("OLDPWD", *env_l));
+			ft_putendl(ft_envar("OLDPWD", *env_l));
+		}
 		else if (arg[i][0] == '.' && ft_strncmp(arg[i],"...", 3) != 0)
 		{
 			curpath = ft_strdup(ft_envar("PWD", *env_l));
 			curpath = ft_stradd(curpath, "/");
 			curpath = ft_stradd(curpath, arg[i]);
+		}
+		else if (arg[i][0] == '~')
+		{
+			curpath = ft_strdup(ft_envar("HOME", *env_l));
+			curpath = ft_stradd(curpath, "/");
+			curpath = ft_stradd(curpath, arg[i] + 1);
 		}
 		else
 		{
@@ -74,7 +91,15 @@ void		cd(char **arg, t_list **env_l)
 		}
 	}
 	curpath = clean(curpath);
-	chdir(curpath);
+	if (chdir(curpath) < 0)
+	{
+		ft_putendl(curpath);
+		ft_putendl("cd: error");
+		return;
+	}
+	pwd = ft_strjoin("OLDPWD=", ft_envar("PWD", *env_l));
+	ft_setenv(pwd, env_l);
+	ft_strdel(&pwd);
 	pwd = ft_strjoin("PWD=", curpath);
 	ft_setenv(pwd, env_l);
 	ft_strdel(&pwd);

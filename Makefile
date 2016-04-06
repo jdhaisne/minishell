@@ -6,7 +6,7 @@
 #    By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/28 13:53:34 by jdhaisne          #+#    #+#              #
-#    Updated: 2016/03/28 13:57:47 by jdhaisne         ###   ########.fr        #
+#    Updated: 2016/04/06 11:41:04 by jdhaisne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC = main.c \
 	  setenv.c \
 	  unsetenv.c \
 	  ft_cd.c \
+	  exit.c \
 	  gnl/get_next_line.c
 
 OBJ = main.o \
@@ -25,6 +26,7 @@ OBJ = main.o \
 	  setenv.o \
 	  unsetenv.o \
 	  ft_cd.o \
+	  exit.o \
 	  get_next_line.o
 
 LIB = libft.a
