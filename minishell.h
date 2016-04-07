@@ -24,5 +24,6 @@ t_list	*ft_unsetenv(char *name, t_list *env_l);
 void		cd(char **arg, t_list **env_l);
 void	ft_exit(char **arg);
 char **split_tab(char **tab, int i);
+char **read_line(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 13:51:07 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/06 13:32:31 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/07 15:30:30 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,7 @@ void	ft_env(char **arg, t_list *env_l)
 			i++;
 		}
 		else
-		{
-			ft_putendl("error");
 			break;
-		}
 	}
 	while (arg[i] != NULL && ft_strlen(arg[i]) != get_name_size(arg[i]))
 	{

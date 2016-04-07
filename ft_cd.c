@@ -3,6 +3,7 @@
 char	*clean(char *curpath)
 {
 	int i;
+	int j;
 	char	**tabpath;
 	char *new;
 
@@ -11,26 +12,29 @@ char	*clean(char *curpath)
 	tabpath = ft_strsplit(curpath, '/');
 	while (tabpath[i] != NULL)
 	{
+		j = 1;
 		if (ft_strequ(tabpath[i], "."))
 			ft_strclr(tabpath[i]);
-		else if(ft_strequ(tabpath[i], "..") && i > 0 && 
-				ft_strequ(tabpath[i - 1], "..") == 0)
+		else if(ft_strequ(tabpath[i], ".."))
 		{
 			ft_strclr(tabpath[i]);
-			ft_strclr(tabpath[i - 1]);
+			while (i - j >= 0 && ft_strlen(tabpath[i - j]) == 0)
+				j++;
+			ft_strclr(tabpath[i - j]);
 		}
 		i++;
 	}
 	i = 0;
-			new = ft_strcat(new,"/"); 
+			new= ft_strcat(new,"/"); 
 	while(tabpath[i] != NULL)
 	{
-		if (ft_strlen(tabpath[i]) > 0 && i > 0)
+		if (ft_strlen(tabpath[i]) > 0 && i > 0 && ft_strlenrc(new, '/') > 0)
 			new = ft_strcat(new,"/"); 
 		new = ft_strcat(new, tabpath[i]);
 		ft_strdel(&tabpath[i]);
 		i++;
 	}
+	ft_putendl(new);
 	return (new);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/25 12:25:10 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/06 16:31:59 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/07 15:33:04 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ char **get_path(char **env)
 	char *tmp;
 
 	i = 0;
-	if(env[0] == NULL)
-		return (NULL);
-	while (ft_strncmp(env[i], "PATH", 4) != 0)
+	while (env[i] != NULL && ft_strncmp(env[i], "PATH", 4) != 0)
 		i++;
+	if(env[i] == NULL)
+		return (NULL);
 	path = ft_strsplit(env[i], ':');
 	i = 0;
 	while(path[i] != NULL)
@@ -131,8 +131,9 @@ void	launch(char **arg, char **env, char **path)
 		if(err == -1 && execve(arg[0], arg, env) == -1)
 		{
 			ft_putstr("minishell: command not found: ");
-			ft_putendl(arg[0]);
+			ft_putstr(arg[0]);
 		}
+		ft_putchar('\n');
 		exit(err);
 	}
 	if(pid > 0)
@@ -144,8 +145,10 @@ int main(int argc, char **argv)
 	char	*str;
 	char	**arg;
 	t_list	*env_l;
+	char **path;
 
 	//init;
+	path = get_path(environ);
 	env_l = double_tab_to_list(environ);
 	ft_putendl("welcomw in jdsh");
 	str = NULL;
@@ -154,11 +157,11 @@ int main(int argc, char **argv)
 	while(1)
 	{
 		ft_putstr("$> ");
-		arg = read();
+		arg = read_line();
 		if(*arg != NULL)
 		{
 		if(built_in(arg, &env_l) == 0)
-			launch(arg, list_to_tab(env_l), get_path(list_to_tab(env_l)));
+			launch(arg, list_to_tab(env_l), path);
 
 		//close
 		}
