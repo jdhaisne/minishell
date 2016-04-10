@@ -17,11 +17,11 @@ char	**read_line(void)
 {
 	char *str;
 	char *str_ok;
-	int i;
+/*	int i;
 	int j;
 
 	i = 0;
-	j = 0;
+	j = 0;*/
 	get_next_line(0, &str);
 	str = ft_strtrim(str);
 	str_ok = str;

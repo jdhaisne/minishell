@@ -43,22 +43,42 @@ char	*clean(char *curpath)
 	
 }*/
 
+static int	is_option(char *arg, int *P)
+{
+	int i;
+
+	i = 1;
+	if (arg[0] != '-')
+		return (0);
+	while (arg[i] != '\0')
+	{
+		if (arg[i] == 'P')
+			*P = 1;
+		else if (arg[i] == 'L')
+			*P = 0;
+		else
+		{
+			*P = 0;
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
 void		cd(char **arg, t_list **env_l)
 {
 	char	*home;
 	char	*curpath;
 	char *pwd;
 	int		i;
-	//int		P;
+	int		P;
 
 	home = ft_envar("HOME", *env_l);
 	i = 1;
-	//P = 0;
-	/*while(arg[i] != NULL && arg[i][0] == '-')
-	  {
-	  while (arg[i][
+	P = 0;
+	while(arg[i] != NULL && is_option(arg[i], &P))
 	  i++;
-	  }*/
 	if (arg[i] == NULL)
 	{	if (home == NULL)
 		ft_putendl("cd: HOME not set");
@@ -108,4 +128,5 @@ void		cd(char **arg, t_list **env_l)
 	ft_setenv(pwd, env_l);
 	ft_strdel(&pwd);
 	ft_strdel(&curpath);
+	ft_putnbr(P);
 }
