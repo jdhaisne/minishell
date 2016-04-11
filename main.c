@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/25 12:25:10 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/07 15:33:04 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/11 19:23:27 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ void	launch(char **arg, char **env, char **path)
 		wait(&i);
 }
 
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **env)
 {
 	char	*str;
 	char	**arg;
@@ -148,8 +148,8 @@ int main(int argc, char **argv)
 	char **path;
 
 	//init;
-	path = get_path(environ);
-	env_l = double_tab_to_list(environ);
+	path = get_path(env);
+	env_l = double_tab_to_list(env);
 	ft_putendl("welcomw in jdsh");
 	str = NULL;
 	if (argc == 5)

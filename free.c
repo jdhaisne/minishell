@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/04/06 11:35:40 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/11 18:48:47 by jdhaisne         ###   ########.fr       */
+/*   Created: 2016/04/11 17:56:04 by jdhaisne          #+#    #+#             */
+/*   Updated: 2016/04/11 18:05:24 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_exit(char **arg)
+void	ft_free_double_tab(char ***tab)
 {
-	if (arg[1] == NULL)
-		exit(0);
-	if (arg[2] == NULL)
-		exit(ft_atoi(arg[1]));
-	ft_putendl("exit: too many arguments");
+	int i;
 }

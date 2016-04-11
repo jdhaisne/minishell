@@ -1,13 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/04/11 18:48:29 by jdhaisne          #+#    #+#             */
+/*   Updated: 2016/04/11 18:48:32 by jdhaisne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "libft/libft.h"
 # include "gnl/get_next_line.h"
 # include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 
-extern char **environ;
+extern char **g_environ;
 
 void	print_list(t_list *start);
 char	**get_path(char **env);
