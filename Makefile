@@ -6,7 +6,7 @@
 #    By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/28 13:53:34 by jdhaisne          #+#    #+#              #
-#    Updated: 2016/04/07 12:28:14 by jdhaisne         ###   ########.fr        #
+#    Updated: 2016/04/13 13:13:54 by jdhaisne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,8 @@ SRC = main.c \
 	  setenv.c \
 	  unsetenv.c \
 	  ft_cd.c \
+	  ft_cd2.c \
+	  ft_cd_check.c \
 	  exit.c \
 	  read.c \
 	  gnl/get_next_line.c
@@ -26,7 +28,9 @@ OBJ = main.o \
 	  env.o \
 	  setenv.o \
 	  unsetenv.o \
+	  ft_cd_check.o \
 	  ft_cd.o \
+	  ft_cd2.o \
 	  exit.o \
 	  read.o \
 	  get_next_line.o

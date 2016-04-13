@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/25 12:25:10 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/11 19:23:27 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/13 17:07:29 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ t_list	*double_tab_to_list(char **tab)
 	return (start);
 }
 
-void	launch(char **arg, char **env, char **path)
+void	launch(char **arg, char **env, char **path, char *place)
 {
 	pid_t	pid;
 	int		i;
@@ -123,6 +123,7 @@ void	launch(char **arg, char **env, char **path)
 		return ;
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		while (path[i] != NULL)
 		{
 			err = execve(ft_strjoin(path[i], arg[0]), arg, env);
@@ -130,14 +131,28 @@ void	launch(char **arg, char **env, char **path)
 		}
 		if(err == -1 && execve(arg[0], arg, env) == -1)
 		{
-			ft_putstr("minishell: command not found: ");
+			ft_putstr(place);
+			ft_putstr(": command not found: ");
 			ft_putstr(arg[0]);
 		}
 		ft_putchar('\n');
 		exit(err);
 	}
 	if(pid > 0)
+	{
+		signal(SIGINT, SIG_IGN);
 		wait(&i);
+	}
+}
+
+void	show_prompt(void)
+{
+	char *cwd;
+
+	cwd =  getcwd(NULL, 0);
+		ft_putstr("$> ");
+		ft_putstr((ft_strrchr(cwd, '/')) + 1);
+		ft_putstr(": ");
 }
 
 int main(int argc, char **argv, char **env)
@@ -156,12 +171,12 @@ int main(int argc, char **argv, char **env)
 		ft_putendl(argv[0]);
 	while(1)
 	{
-		ft_putstr("$> ");
-		arg = read_line();
+		show_prompt();
+		arg = read_line(env_l);
 		if(*arg != NULL)
 		{
 		if(built_in(arg, &env_l) == 0)
-			launch(arg, list_to_tab(env_l), path);
+			launch(arg, list_to_tab(env_l), path, "minishell");
 
 		//close
 		}
