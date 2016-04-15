@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/13 12:31:55 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/15 14:35:39 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/15 16:48:40 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,11 @@ char	*remove_slash(char *path)
 	return (new);
 }
 
-int cd_check_error(char *curpath)
+int cd_check_error_test(char **tab, char *tmp, int p)
 {
-	char	**tab;
-	char	*tmp;
-	int		i;
+	int i;
 
-	if(curpath == NULL)
-		return (1);
-	tab = ft_strsplit(curpath, '/');
 	i = 0;
-	tmp = ft_strnew(sizeof(char));
 	while(tab[i] != NULL)
 	{
 		tmp = ft_stradd(tmp, "/");
@@ -63,8 +57,22 @@ int cd_check_error(char *curpath)
 			ft_putendl(": permission denied");
 			return (1);
 		}
-		tmp = clean(tmp, 0, 0);
+		tmp = clean(tmp, p, 0, 0);
 		i++;
 	}
 	return (0);
+}
+
+int cd_check_error(char *curpath, int p)
+{
+	char	**tab;
+	char	*tmp;
+	int		i;
+
+	if(curpath == NULL)
+		return (1);
+	tab = ft_strsplit(curpath, '/');
+	i = 0;
+	tmp = ft_strnew(sizeof(char));
+	return (cd_check_error_test(tab, tmp, p));
 }

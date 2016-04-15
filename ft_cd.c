@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/12 12:24:35 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/15 14:32:56 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/15 16:38:08 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,14 @@ char	*cd_dir(char **arg, int i, int p, t_list *env_l)
 		curpath = cd_old(env_l);
 	else
 		curpath = cd_get_curpath(arg[i], env_l);
-	if(cd_check_error(curpath) == 1)
+	if(cd_check_error(curpath, p) == 1)
 		return (NULL);
 	return (curpath);
 }
 
 void	cd_end(char *curpath, char *pwd, int p, t_list **env_l)
 {
-	curpath = clean(curpath, p, -1);
+	curpath = clean(curpath, p, -1, 0);
 	if (chdir(curpath) < 0)
 	{
 		ft_putendl(curpath);
@@ -87,18 +87,14 @@ void	cd_end(char *curpath, char *pwd, int p, t_list **env_l)
 	ft_strdel(&curpath);
 }
 
-void	cd(char **arg, t_list **env_l)
+void	cd(char **arg, t_list **env_l, int i, int p)
 {
 	char	*home;
 	char	*curpath;
 	char	*pwd;
-	int		i;
-	int		p;
 
 	home = ft_envar("HOME", *env_l);
 	pwd = getcwd(NULL, 0);
-	i = 1;
-	p = 0;
 	while (arg[i] != NULL && is_option(arg[i], &p))
 		i++;
 	if (arg[i] == NULL)

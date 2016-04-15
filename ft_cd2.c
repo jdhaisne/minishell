@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/12 13:54:00 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/15 14:16:12 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/15 16:36:31 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,8 @@ char	*clean2(char **tabpath)
 	return (new);
 }
 
-char	*clean(char *curpath, int p, int i)
+char	*clean(char *curpath, int p, int i, int j)
 {
-	int		j;
 	char	**tabpath;
 	char	*tmp;
 
