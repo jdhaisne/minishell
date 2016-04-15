@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/13 12:31:55 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/13 15:07:03 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/15 14:35:39 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int cd_check_error(char *curpath)
 	char	*tmp;
 	int		i;
 
+	if(curpath == NULL)
+		return (1);
 	tab = ft_strsplit(curpath, '/');
 	i = 0;
 	tmp = ft_strnew(sizeof(char));
@@ -64,6 +66,5 @@ int cd_check_error(char *curpath)
 		tmp = clean(tmp, 0, 0);
 		i++;
 	}
-	ft_putendl("a");
 	return (0);
 }

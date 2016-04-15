@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/11 18:48:29 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/13 17:08:18 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/15 15:59:34 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@
 extern char **g_environ;
 
 void	print_list(t_list *start);
-char	**get_path(char **env);
+char	**get_path(t_list *env);
 void	launch(char **arg, char **env, char **path, char *place);
 t_list	*double_tab_to_list(char **tab);
-int	built_in(char **arg, t_list **env_l);
+int	built_in(char **arg, t_list **env_l, int i);
 char	**list_to_tab(t_list *start);
 
 void	ft_env(char **arg, t_list *env_l);
@@ -47,6 +47,7 @@ char	*clean(char *curpath, int p, int i);
 char	*clean2(char **tabpath);
 int cd_check_error(char *curpath);
 char	*remove_slash(char *path);
+char	*cd_double_arg(char **arg,t_list *env_l, int p);
 
 
 #endif

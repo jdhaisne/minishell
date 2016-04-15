@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/12 12:24:35 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/13 15:54:26 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/15 14:32:56 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 char	*cd_old(t_list *env_l)
 {
 	char *curpath;
+	char *oldpwd;
 
-	if (ft_envar("OLDPWD", env_l) == NULL)
+	oldpwd = ft_envar("OLDPWD", env_l);
+	if (oldpwd == NULL || ft_strlen(oldpwd) == 0)
 	{
 		ft_putendl("cd: OLDPWD not set");
 		return (NULL);
@@ -48,18 +50,13 @@ char	*cd_get_curpath(char *arg, t_list *env_l)
 	return (curpath);
 }
 
-char	*cd_dir(char **arg, int i, char *pwd, t_list *env_l)
+char	*cd_dir(char **arg, int i, int p, t_list *env_l)
 {
 	char *curpath;
 
 	if (arg[i + 1] != NULL)
 	{
-		curpath = cd_r(ft_strsplit(pwd, '/'), arg[i], arg[i + 1]);
-		if (curpath == NULL)
-		{
-			ft_putstr("cd: string not in pwd: ");
-			ft_putendl(arg[i]);
-		}
+		curpath = cd_double_arg(split_tab(arg, i) ,env_l, p);
 	}
 	else if (arg[i][0] == '/')
 		curpath = ft_strdup(arg[i]);
@@ -69,16 +66,12 @@ char	*cd_dir(char **arg, int i, char *pwd, t_list *env_l)
 		curpath = cd_get_curpath(arg[i], env_l);
 	if(cd_check_error(curpath) == 1)
 		return (NULL);
-	ft_putendl(curpath);
-	ft_putendl("q");
 	return (curpath);
 }
 
 void	cd_end(char *curpath, char *pwd, int p, t_list **env_l)
 {
-	ft_putendl("R");
 	curpath = clean(curpath, p, -1);
-	ft_putendl(curpath);
 	if (chdir(curpath) < 0)
 	{
 		ft_putendl(curpath);
@@ -119,7 +112,7 @@ void	cd(char **arg, t_list **env_l)
 			curpath = ft_strdup(home);
 	}
 	else
-		curpath = cd_dir(arg, i, pwd, *env_l);
+		curpath = cd_dir(arg, i, p, *env_l);
 	if (curpath == NULL)
 		return ;
 	cd_end(curpath, pwd, p, env_l);

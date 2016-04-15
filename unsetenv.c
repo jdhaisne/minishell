@@ -6,19 +6,36 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 13:52:23 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/12 12:23:50 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/15 15:40:23 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list	*ft_unsetenv(char *name, t_list *env_l)
+static int	check_unsetenv(char *name)
+{
+	if(name == NULL)
+	{
+		ft_putendl("unsetenv: no argument");
+		return(1);
+	}
+	if (ft_strequ(name, "="))
+	{
+		ft_putendl("unsetenv: invaid arguments");
+		return (1);
+	}
+	return (0);
+}
+
+t_list		*ft_unsetenv(char *name, t_list *env_l)
 {
 	t_list	*tmp1;
 	t_list	*tmp2;
 
 	tmp1 = env_l;
 	tmp2 = NULL;
+	if (check_unsetenv(name) == 1)
+		return (env_l);
 	while (tmp1 != NULL)
 	{
 		if (ft_strncmp(name, tmp1->content, get_name_size(tmp1->content)) == 0)

@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/12 13:54:00 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/13 15:20:57 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/15 14:16:12 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ char	*clean(char *curpath, int p, int i)
 	char	*tmp;
 
 	tabpath = ft_strsplit(curpath, '/');
-	ft_putendl("Y");
 	while (tabpath[++i] != NULL)
 	{
 		j = 0;

@@ -6,7 +6,7 @@
 #    By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/28 13:53:34 by jdhaisne          #+#    #+#              #
-#    Updated: 2016/04/13 13:13:54 by jdhaisne         ###   ########.fr        #
+#    Updated: 2016/04/15 13:59:50 by jdhaisne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC = main.c \
 	  setenv.c \
 	  unsetenv.c \
 	  ft_cd.c \
+	  ft_cd3.c \
 	  ft_cd2.c \
 	  ft_cd_check.c \
 	  exit.c \
@@ -29,6 +30,7 @@ OBJ = main.o \
 	  setenv.o \
 	  unsetenv.o \
 	  ft_cd_check.o \
+	  ft_cd3.o \
 	  ft_cd.o \
 	  ft_cd2.o \
 	  exit.o \

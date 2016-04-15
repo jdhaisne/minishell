@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 12:46:37 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/13 17:05:08 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/15 15:12:00 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	ft_setenv(char *arg, t_list **env_l)
 		print_list(*env_l);
 		return ;
 	}
+	if (ft_strlenc(arg, '=') == 0)
+		return ;
 	while (tmp != NULL)
 	{
 		if (ft_strncmp(tmp->content, arg, get_name_size(arg)) == 0)
