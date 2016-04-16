@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/12 13:54:00 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/15 16:36:31 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/16 18:23:03 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,33 @@ int		is_link(char **tab, int i, char **tmp)
 	}
 	lstat(path, &buf);
 	if ((buf.st_mode & S_IFMT) != S_IFLNK)
+	{
+		ft_strdel(&path);
 		return (0);
+	}
 	*tmp = ft_strnew(buf.st_size + 1);
 	readlink(path, *tmp, buf.st_size + 1);
+	ft_strdel(&path);
 	return (1);
 }
 
-char	*clean2(char **tabpath)
+char	*clean2(char **tabpath, char *curpath)
 {
 	char	*new;
 	int		i;
 
 	i = 0;
 	new = ft_strdup("/");
+	ft_strdel(&curpath);
 	while (tabpath[i] != NULL)
 	{
 		if (ft_strlen(tabpath[i]) > 0 && i > 0 && ft_strlenrc(new, '/') > 0)
 			new = ft_stradd(new, "/");
 		new = ft_stradd(new, tabpath[i]);
-		ft_strdel(&tabpath[i]);
 		i++;
 	}
 	new = remove_slash(new);
+	ft_free_double_tab(tabpath);
 	return (new);
 }
 
@@ -63,24 +68,24 @@ char	*clean(char *curpath, int p, int i, int j)
 	while (tabpath[++i] != NULL)
 	{
 		j = 0;
-		if (ft_strequ(tabpath[i], "."))
+		if (p == 1 && is_link(tabpath, i, &tmp) == 1)
+		{
+			ft_strdel(&tabpath[i]);
+			tabpath[i] = ft_strdup(tmp);
+			ft_strdel(&tmp);
+		}
+		else if (ft_strequ(tabpath[i], "."))
 			ft_strclr(tabpath[i]);
 		else if (ft_strequ(tabpath[i], ".."))
 		{
 			ft_strclr(tabpath[i]);
 			while (i - j >= 0 && ft_strlen(tabpath[i - j]) == 0)
 				j++;
-			if(i - j >= 0)
-			ft_strclr(tabpath[i - j]);
-		}
-		else if (is_link(tabpath, i, &tmp) == 1 && p == 1)
-		{
-			ft_strdel(&tabpath[i]);
-			tabpath[i] = ft_strdup(tmp);
-			ft_strdel(&tmp);
+			if (i - j >= 0)
+				ft_strclr(tabpath[i - j]);
 		}
 	}
-	return (clean2(tabpath));
+	return (clean2(tabpath, curpath));
 }
 
 int		is_option(char *arg, int *p)

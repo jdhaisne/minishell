@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 13:51:07 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/15 16:30:39 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/16 20:22:22 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int		env_opt(char **arg, t_list **new_env, int i)
 		}
 		else if (ft_strcmp(arg[i], "-i") == 0 || ft_strequ(arg[i], "-"))
 		{
-			*new_env = NULL;
+			ft_lstdel(new_env, free_env);
 			i++;
 		}
 		else
@@ -87,22 +87,24 @@ int		env_opt(char **arg, t_list **new_env, int i)
 	return (i);
 }
 
+void	launch_env(char **arg, char **new_env, char **path, char *place)
+{
+	launch(arg, new_env, path, place);
+	ft_free_double_tab(arg);
+}
+
 void	ft_env(char **arg, t_list *env_l)
 {
 	int		i;
 	t_list	*new_env;
-	char	**env;
-	char	**tab;
 	char	**path;
 
-	env = NULL;
-	tab = NULL;
 	if (env_l == NULL)
 		return ;
-	path = get_path(env_l);
 	new_env = ft_lstdup(env_l);
 	if ((i = env_opt(arg, &new_env, 1)) < 0)
 		return ;
+	path = get_path(env_l);
 	while (arg[i] != NULL && ft_strlen(arg[i]) != get_name_size(arg[i]))
 	{
 		ft_setenv(arg[i], &new_env);
@@ -113,5 +115,8 @@ void	ft_env(char **arg, t_list *env_l)
 	else if (ft_strequ("env", arg[i]))
 		ft_env(split_tab(arg, i), new_env);
 	else
-		launch(split_tab(arg, i), list_to_tab(new_env), path, "env");
+		launch_env(split_tab(arg, i), list_to_tab(new_env), path, "env");
+	ft_free_double_tab(path);
+	if (new_env != NULL)
+		ft_lstdel(&new_env, free_env);
 }
