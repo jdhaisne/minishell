@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/11 18:48:29 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/16 20:05:58 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/17 16:01:38 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,7 @@ char		*remove_slash(char *path);
 char		*cd_double_arg(char **arg, t_list *env_l, int p);
 void		free_env(void *content, size_t size);
 void		ft_free_double_tab(char **tab);
+int			env_err(int mode, char opt);
+void		free_env_err(char **path, t_list *new_env);
 
 #endif

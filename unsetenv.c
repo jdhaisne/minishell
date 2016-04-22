@@ -6,7 +6,7 @@
 /*   By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 13:52:23 by jdhaisne          #+#    #+#             */
-/*   Updated: 2016/04/16 18:00:44 by jdhaisne         ###   ########.fr       */
+/*   Updated: 2016/04/17 16:11:47 by jdhaisne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	check_unsetenv(char *name)
 	}
 	if (ft_strequ(name, "="))
 	{
-		ft_putendl("unsetenv: invaid arguments");
+		ft_putendl("unsetenv: invalid arguments");
 		return (1);
 	}
 	return (0);

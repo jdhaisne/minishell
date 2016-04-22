@@ -6,7 +6,7 @@
 #    By: jdhaisne <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/28 13:53:34 by jdhaisne          #+#    #+#              #
-#    Updated: 2016/04/16 18:03:45 by jdhaisne         ###   ########.fr        #
+#    Updated: 2016/04/17 15:20:03 by jdhaisne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME = minishell
 
 SRC = main.c \
 	  env.c \
+	  env2.c \
 	  setenv.c \
 	  unsetenv.c \
 	  ft_cd.c \
@@ -29,6 +30,7 @@ SRC = main.c \
 
 OBJ = main.o \
 	  env.o \
+	  env2.o \
 	  setenv.o \
 	  unsetenv.o \
 	  ft_cd_check.o \
